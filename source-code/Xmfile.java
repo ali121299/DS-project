@@ -16,17 +16,18 @@ import java.util.*;
  * @author oy
  */
 public class Xmfile {
-   static String content , tag;
-   static int sz;
-   static Stack<String> stk= new Stack<>();  
-   static String [] str;
-  
+    private String  address;
+    private String [] str;
+    private boolean Is_compressed;
+    private int sz;
    
-   public static void reader() throws FileNotFoundException
+   public Xmfile(){Is_compressed = false;}
+   public Xmfile(String address){this.address = address;}
+   
+   public void reader() throws FileNotFoundException
     {
-        content="";
-        str = null;
-        File file = new File ("C:\\Users\\oy\\Desktop\\DS\\note2.txt");
+        String content="";
+        File file = new File (address);
         Scanner scan = new Scanner(file);
        // scan.nextLine();
         while(scan.hasNextLine())
@@ -35,48 +36,41 @@ public class Xmfile {
         str = content.split("\n");
     }
   
-   
-   
-   
-   public static boolean valid(String content)
+   public boolean valid()
    {
-       
-       for(int i=0 ; i<sz ; i++)
+       Stack<String> stk= new Stack<>(); 
+       for(String line : str)
        {
-           if((Character.compare(content.charAt(i),'<')==0)) // content[i]==
+           for(int i=0 ; i<line.length() ; i++)
+           if((Character.compare(line.charAt(i),'<')==0)) // content[i]==
            {
-               tag = node('>',i , content , sz);
-               System.out.println(tag);
+               String tag = node('>',i , line , line.length());
                if(!(Character.compare(tag.charAt(0) , '/')==0))
-                   stk.push(tag);
+                    stk.push(tag);
                else if( !stk.empty() && stk.peek().equals(tag.substring(1)) )
-                       stk.pop();
+                    stk.pop();
                else return false;
            }
        }
        return stk.empty();
    }
    
-   
-   
-   
-   private static String node (char c , int pos  , String which , int len)
+   private String node (char c , int pos  , String which , int len)
    {
        String name="";
-       for(int i=pos+1 ; i<sz ; i++)
+       for(int i=pos+1 ; i<len ; i++)
            if(!(Character.compare(which.charAt(i),c)==0))
                name+=which.charAt(i);
            else break;
        return name;
    }
    
-   
-   
-   
-   public static void expand () throws FileNotFoundException, IOException
+   public void expand () throws FileNotFoundException, IOException
    {
+       if(!Is_compressed) return;
        String spaces ="" , upadted_content = "";
        boolean flag = false;
+       int y=0;
        for(String line : str)
        {
            if(!line.equals(""))
@@ -86,39 +80,66 @@ public class Xmfile {
                flag = true;
            }
           upadted_content = upadted_content.concat(spaces + line +"\n");
+          str[y++] = spaces+line;
           if(flag){spaces+="    "; flag=false;}
            int len = line.length();
            for(int i=0 ; i<len ; i++)
             {
                 if((Character.compare(line.charAt(i),'<')==0)) // content[i]==
                 {
-                    tag = node('>',i , line , len);
+                    String tag = node('>',i , line , len);
                     if(!(Character.compare(tag.charAt(0) , '/')==0))
                         spaces+="    ";
                     else spaces = spaces.replaceFirst("    ", "");
                 }
            }
-           
        }
-       FileWriter writer = new FileWriter("C:\\Users\\oy\\Desktop\\DS\\note2.txt");
-       writer.write(upadted_content);
-       writer.close();
+       writer(upadted_content , false);
    }
    
-   
-   
-   
-   public static void compress() throws IOException
+   public void compress() throws IOException
    {
+       if(Is_compressed) return;
        String upadted_content = "";
+       int i=0;
        for(String line : str)
        {
            upadted_content = upadted_content.concat(line.trim()+"\n");
+           str[i++] = line.trim();
        }
-       FileWriter writer = new FileWriter("C:\\Users\\oy\\Desktop\\DS\\note3.txt");
-       writer.write(upadted_content);
-       writer.close();
+       writer(upadted_content , true);
    }
+   
+   private void writer(String upadted_content , boolean yes) throws IOException
+   {
+       FileWriter w= new FileWriter(address);
+       w.write(upadted_content);
+       w.close();
+       Is_compressed = yes;
+   }
+   
+   public void print()
+   {
+       for(String line : str)
+           System.out.println(line);
+   }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setIs_compressed(boolean Is_compressed) {
+        this.Is_compressed = Is_compressed;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public boolean isIs_compressed() {
+        return Is_compressed;
+    }
+   
    
 }
 
