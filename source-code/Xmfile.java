@@ -17,13 +17,15 @@ import java.util.*;
  */
 public class Xmfile {
     private String  address;
-    private String [] str;
+    private String [] str ;
+    public ArrayList<String>labels;
     private boolean Is_compressed;
-    private int sz;
+    public int y;
+
    
-   public Xmfile(){Is_compressed = false;}
-   public Xmfile(String address){this.address = address;}
-   
+   public Xmfile(){Is_compressed = false; labels = new ArrayList<String>();}
+   public Xmfile(String address){this();this.address = address;}
+
    public void reader() throws FileNotFoundException
     {
         String content="";
@@ -32,25 +34,26 @@ public class Xmfile {
        // scan.nextLine();
         while(scan.hasNextLine())
             content = content.concat(scan.nextLine()+"\n");
-        sz = content.length(); 
         str = content.split("\n");
     }
   
    public boolean valid()
    {
+        y = 1;
        Stack<String> stk= new Stack<>(); 
        for(String line : str)
        {
            for(int i=0 ; i<line.length() ; i++)
-           if((Character.compare(line.charAt(i),'<')==0)) // content[i]==
+           if((Character.compare(line.charAt(i),'<')==0)) // content[i]=='<'
            {
                String tag = node('>',i , line , line.length());
-               if(!(Character.compare(tag.charAt(0) , '/')==0))
-                    stk.push(tag);
-               else if( !stk.empty() && stk.peek().equals(tag.substring(1)) )
+               if(!((Character.compare(tag.charAt(0) , '<')==0) && (Character.compare(tag.charAt(1) , '/')==0)))
+                    stk.push(tag.substring(1));
+               else if( !stk.empty() && stk.peek().equals(tag.substring(2)) )
                     stk.pop();
                else return false;
            }
+           y++;
        }
        return stk.empty();
    }
@@ -58,7 +61,7 @@ public class Xmfile {
    private String node (char c , int pos  , String which , int len)
    {
        String name="";
-       for(int i=pos+1 ; i<len ; i++)
+       for(int i=pos ; i<len ; i++)
            if(!(Character.compare(which.charAt(i),c)==0))
                name+=which.charAt(i);
            else break;
@@ -80,7 +83,7 @@ public class Xmfile {
                flag = true;
            }
           upadted_content = upadted_content.concat(spaces + line +"\n");
-          str[y++] = spaces+line;
+          //str[y++] = spaces+line;
           if(flag){spaces+="    "; flag=false;}
            int len = line.length();
            for(int i=0 ; i<len ; i++)
@@ -88,7 +91,7 @@ public class Xmfile {
                 if((Character.compare(line.charAt(i),'<')==0)) // content[i]==
                 {
                     String tag = node('>',i , line , len);
-                    if(!(Character.compare(tag.charAt(0) , '/')==0))
+                    if(!(Character.compare(tag.charAt(1) , '/')==0))
                         spaces+="    ";
                     else spaces = spaces.replaceFirst("    ", "");
                 }
@@ -110,9 +113,9 @@ public class Xmfile {
        writer(upadted_content , true);
    }
    
-   private void writer(String upadted_content , boolean yes) throws IOException
+   public void writer(String upadted_content , boolean yes) throws IOException
    {
-       FileWriter w= new FileWriter(address);
+       FileWriter w= new FileWriter("C:\\Users\\oy\\Desktop\\DS\\js.txt");
        w.write(upadted_content);
        w.close();
        Is_compressed = yes;
@@ -140,6 +143,27 @@ public class Xmfile {
         return Is_compressed;
     }
    
-   
+    public void parsing ()
+    {
+        for(String line : str)
+        {
+            for(int i=0 ; i<line.length() ; i++)
+            {
+                String tag;
+                if((Character.compare(line.charAt(i),'<')==0))
+                {
+                    tag = node('>' , i , line , line.length()); 
+                    i+=tag.length();
+                }
+                else
+                {
+                    tag = node('<' , i , line , line.length());
+                    i+=tag.length()-1;
+                }
+                labels.add(tag);
+            }
+        }
+    }
+    
 }
 
