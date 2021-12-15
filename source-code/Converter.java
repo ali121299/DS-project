@@ -73,7 +73,35 @@ public class Converter {
     }
  
     
-    
+    private static boolean Is_child_value (ArrayList<Node> children )
+{
+    String s = children.get(0).getTag_value();
+    if(!(Character.compare(s.charAt(0) , '<')==0))
+        return true;
+    return false ;
+}
+ 
+ 
+    private static boolean children_repeated(ArrayList<Node> children)
+    {
+        for(int i=0 ; i<children.size()-1 ; i++)
+            if(children.get(i).getTag_value().equals(children.get(i+1).getTag_value()) ) return true;
+        return false;
+    }
+ 
+    private static String call_children (ArrayList<Node> children , String content ,String spaces )
+    {
+        int number_of_children = children.size() , child_number=1;
+        for(Node child : children)
+        {
+            content =  tree_to_jason(child, content, spaces);
+            if(child_number++<number_of_children) content += ",";
+            content+="\n";
+            spaces.replaceFirst("    ", "");
+        }
+         return content;
+    }
+
    
     
 }
