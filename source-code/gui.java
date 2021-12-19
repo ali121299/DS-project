@@ -190,6 +190,27 @@ private void openfiileActionPerformed(java.awt.event.ActionEvent evt) {
  
     }    
  
+private void To_jasonActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+ 
+        try {
+            x1.reader();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(NewJFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        x1.parsing();
+        Tree t1 =  Converter.xml_to_tree(x1.labels);
+        String nw = "{\n" ;
+        nw = Converter.tree_to_jason(t1.root, nw, "");
+        nw +="\n}";
+        try {
+            x1.writer(nw, true);
+        } catch (IOException ex) {
+            Logger.getLogger(NewJFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        x1.display(jTextArea2);
+    } 
+ 
  
      /**
      * @param args the command line arguments
