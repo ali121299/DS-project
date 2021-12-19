@@ -225,6 +225,22 @@ private void To_jasonActionPerformed(java.awt.event.ActionEvent evt) {
         }
         x1.display(jTextArea2);
     } 
+  private void CompresserActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        
+ 
+        x1.setIs_compressed(false);
+        try {
+            x1.reader();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(NewJFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            x1.compress();
+        } catch (IOException ex) {
+            Logger.getLogger(NewJFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        x1.display(jTextArea2);
+    }
  
  
      /**
