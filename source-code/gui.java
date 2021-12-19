@@ -185,10 +185,25 @@ private void openfiileActionPerformed(java.awt.event.ActionEvent evt) {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(NewJFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
- 
- 
- 
     }    
+ 
+ private void ExpanderActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+ 
+        x1.setIs_compressed(true);
+        try {
+            x1.reader();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(NewJFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            x1.expand();
+        } catch (IOException ex) {
+            Logger.getLogger(NewJFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        x1.display(jTextArea2);
+    }     
+ 
  
 private void To_jasonActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
