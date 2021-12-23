@@ -24,7 +24,6 @@ public class Xmfile {
     private String[] str;
     public ArrayList<String> labels;
     private boolean Is_compressed;
-    public int y;
 
     public Xmfile() {
         Is_compressed = false;
@@ -122,14 +121,12 @@ public class Xmfile {
                     stk.pop();
                 } else
                     {
-                        int y=0;
                         while(!stk.empty() && !stk.peek().equals(word.substring(2)))
                         {
                             labels.add(i, "</"+stk.peek());
                             stk.pop();
-                            ++y;
+                            ++i;
                         }
-                        i+=y;
                         if(!stk.empty()) stk.pop();
                         else labels.remove(i);
                     }
