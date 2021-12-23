@@ -74,7 +74,7 @@ public class Xmfile {
        //scan.nextLine();
         while (scan.hasNextLine()) {
             String line = scan.nextLine();
-            if(line.substring(0, 6).equals("<?xml ")) continue;
+            if(line.length()>5 && line.substring(0, 5).equals("<?xml")) continue;
             content = content.concat(line.trim() + "\n");
         }
         str = content.split("\n");
