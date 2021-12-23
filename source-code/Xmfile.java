@@ -73,7 +73,9 @@ public class Xmfile {
         Scanner scan = new Scanner(file);
        //scan.nextLine();
         while (scan.hasNextLine()) {
-            content = content.concat(scan.nextLine().trim() + "\n");
+            String line = scan.nextLine();
+            if(line.substring(0, 6).equals("<?xml ")) continue;
+            content = content.concat(line.trim() + "\n");
         }
         str = content.split("\n");
     } // O(n) where n is number of lines in file
