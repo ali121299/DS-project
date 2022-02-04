@@ -267,8 +267,21 @@ public class NewJFrame1 extends javax.swing.JFrame {
             Logger.getLogger(NewJFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         x1.display(jTextArea2);
-    }                                         
-
+    } 
+    
+    private void To_jason1ActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        try {
+            // TODO add your handling code here:
+           ArrayList<ArrayList<String>> graph = JsonOPerator.Json_read(x1.getAddress());
+           String text_representation = JsonOPerator.translate_graph_to_text(graph);
+           x1.writer(text_representation, false);
+        } catch (IOException ex) {
+            Logger.getLogger(NewJFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(NewJFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }x1.display(jTextArea2);
+    }
+    
     /**
      * @param args the command line arguments
      */
