@@ -34,7 +34,7 @@ public class Converter {
         boolean Is_children_repeated = children_repeated(root.getChildren());
         boolean Is_value = Is_child_value(root.getChildren());
  
-        if(!Is_value && !Is_children_repeated)
+        if( number_of_childs>1 && !Is_value && !Is_children_repeated)
         { 
            content += "{\n";
            content = call_children(root.getChildren(), content, spaces);
@@ -42,7 +42,7 @@ public class Converter {
         }
  
  
-        else if(Is_children_repeated)
+        else if(Is_children_repeated || (number_of_childs==1 && !Is_value))
         {
             content += "[\n";
             ArrayList<Node> grand_children = new ArrayList<Node>();
