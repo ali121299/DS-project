@@ -20,7 +20,7 @@ import javax.swing.JFileChooser;
  */
 public class Xmfile {
 
-    private String address , content , output_file_address = "";
+    private String address , content , output_file_address = ""  , Foldar_address , json_file_adress="";
     private String[] str;
     public ArrayList<String> labels;
     private boolean Is_compressed;
@@ -212,6 +212,16 @@ public class Xmfile {
         Is_compressed = yes;
     } // O(1)
 
+    
+    public void writer(String upadted_content, boolean yes  , String location ) throws IOException {
+        FileWriter w = new FileWriter(location);
+        w.write(upadted_content);
+        w.close();
+        Is_compressed = yes;
+        
+    }
+    
+    
     public void parsing() {
         for (String line : str) {
             for (int i = 0; i < line.length(); i++) {
@@ -261,12 +271,30 @@ public class Xmfile {
         }
     } // O(n) where n is number of lines in file
     
+    
+     public void display(javax.swing.JTextArea jTextArea2 , String location) {
+        jTextArea2.setText("");
+        try {
+            // TODO add your handling code here:    
+            File file = new File(location);
+            Scanner scan = new Scanner(file);
+            // scan.nextLine();
+            while (scan.hasNextLine()) {
+                jTextArea2.append(scan.nextLine() + "\n");
+            }
+            jTextArea2.requestFocus();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(NewJFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void create_output_file(String filename){
         String [] arr = filename.split("\\\\");
-        output_file_address = "";
+        Foldar_address = "";
         for(int i=0 ; i<arr.length-1 ; ++i)
-            output_file_address += arr[i] + "\\";
-        output_file_address += "XML-EDITOR-OUTPUT.txt";
+            Foldar_address += arr[i] + "\\";
+        output_file_address += "XML-EDITOR-OUTPUT.xml";
+        json_file_adress += Foldar_address + "XML-EDITOR-OUTPUT.json";
         System.out.println(output_file_address);     
     }
 
