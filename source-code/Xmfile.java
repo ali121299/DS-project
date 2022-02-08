@@ -293,7 +293,7 @@ public class Xmfile {
         Foldar_address = "";
         for(int i=0 ; i<arr.length-1 ; ++i)
             Foldar_address += arr[i] + "\\";
-        output_file_address += "XML-EDITOR-OUTPUT.xml";
+        output_file_address += Foldar_address + "XML-EDITOR-OUTPUT.xml";
         json_file_adress += Foldar_address + "XML-EDITOR-OUTPUT.json";
         System.out.println(output_file_address);     
     }
